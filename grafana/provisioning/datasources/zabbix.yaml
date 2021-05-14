@@ -1,0 +1,40 @@
+apiVersion: 1
+
+datasources:
+  - name: Zabbix-lab
+    type: alexanderzobnin-zabbix-datasource
+    access: proxy
+    url: http://zabbix-frontend:8080/api_jsonrpc.php
+    isDefault: true
+    jsonData:
+      # Creds
+      username: Admin
+      password: zabbix
+      # Trends
+      trends: true
+      trendsFrom: "7d"
+      trendsRange: "4d"
+      cacheTTL: "1h"
+      # Alerting
+      alerting: true
+      addThresholds: false
+      alertingMinSeverity: 3
+      disableReadOnlyUsersAck: true
+      dbConnectionEnable: false
+    version: 1
+    editable: false
+
+  - name: Zabbix-DB
+    type: postgres
+    url: postgresql:5432
+    database: zabbix
+    user: zabbix
+    secureJsonData:
+      password: "zabbix"
+    jsonData:
+      sslmode: "disable"
+      maxOpenConns: 200
+      maxIdleConns: 10
+      connMaxLifetime: 14400
+      postgresVersion: 1200
+      timescaledb: false

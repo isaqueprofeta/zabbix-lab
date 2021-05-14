@@ -1,0 +1,159 @@
+version: "3"
+
+volumes:
+  db_data:
+    driver: local
+  grafana_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+services:
+  zabbix-server:
+    hostname: zabbix-server
+    restart: unless-stopped
+    image: zabbix/zabbix-server-pgsql:alpine-${ZABBIX_VERSION}
+    environment:
+      - DB_SERVER_PORT=5432
+      - DB_SERVER_HOST=postgresql
+      - POSTGRES_DB=zabbix
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=zabbix
+    volumes:
+      - ./zabbix/usr/lib/zabbix/externalscripts:/usr/lib/zabbix/externalscripts:ro
+    depends_on:
+      - postgresql
+
+  zabbix-frontend:
+    hostname: zabbix-frontend
+    restart: unless-stopped
+    image: zabbix/zabbix-web-apache-pgsql:alpine-${ZABBIX_VERSION}
+    environment:
+      - DB_SERVER_PORT=5432
+      - DB_SERVER_HOST=postgresql
+      - POSTGRES_DB=zabbix
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=zabbix
+      - PHP_TZ=America/Sao_Paulo
+      - ZBX_SERVER_NAME=zabbix-server
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./zabbix/etc/ssl/apache2:/etc/ssl/apache2:ro
+    depends_on:
+      - postgresql
+      - zabbix-server
+
+  postgresql:
+    hostname: postgresql
+    restart: unless-stopped
+    image: postgres:${POSTGRES_VERSION}-alpine
+    environment:
+      - POSTGRES_DB=zabbix
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=zabbix
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    command: ["postgres", "-c", "max_connections=1000"]
+
+  zabbix-agent:
+    hostname: zabbix-agent
+    restart: unless-stopped
+    image: zabbix/zabbix-agent:alpine-${ZABBIX_VERSION}
+    environment:
+      - ZBX_HOSTNAME=zabbix-agent
+      - ZBX_DEBUGLEVEL=4
+      - ZBX_ENABLEREMOTECOMMANDS=1
+      - ZBX_SERVER_HOST=zabbix-server
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./zabbix/etc/zabbix/zabbix_agentd.d:/etc/zabbix/zabbix_agentd.d:ro
+      - ./zabbix/frontend_hacks:/usr/share/zabbix/local/
+    depends_on:
+      - zabbix-server
+
+  grafana:
+    hostname: grafana
+    restart: unless-stopped
+    image: grafana/grafana
+    environment:
+      - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=alexanderzobnin-zabbix-datasource
+      - GF_LOG_LEVEL=debug
+      - GF_SMTP_ENABLED=true
+      - GF_SMTP_HOST=mailhog:1025
+      - GF_SMTP_USER=
+      - GF_SMTP_PASSWORD=
+      - GF_SMTP_CERT_FILE=
+      - GF_SMTP_KEY_FILE=
+      - GF_SMTP_EHLO_IDENTITY=
+      - GF_SMTP_SKIP_VERIFY=false
+      - GF_SMTP_FROM_ADDRESS=grafana@zabbixlab.local
+      - GF_SMTP_NAME=Grafana-ZabbixLab
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - zabbix-frontend
+
+  zapix:
+    hostname: zapix
+    restart: unless-stopped
+    build:
+      context: ./zapix
+    depends_on:
+      - zabbix-frontend
+
+  pgadmin:
+    hostname: pgadmin
+    restart: unless-stopped
+    image: thajeztah/pgadmin4
+    volumes:
+      - pgadmin_data:/pgadmin
+    depends_on:
+      - postgresql
+
+  mailhog:
+    hostname: mailhog
+    restart: unless-stopped
+    image: mailhog/mailhog:v1.0.0
+    environment:
+      - MH_HOSTNAME=mailhog
+
+  zabbix-provisioning:
+    hostname: zabbix-provisioning
+    image: python:3.8.5-alpine3.12
+    command: ["python", "/tmp/provisioning.py"]
+    volumes:
+      - ./zabbix/provisioning.py:/tmp/provisioning.py:ro
+    depends_on:
+      - zabbix-frontend
+
+  # drawio:
+  #   image: jgraph/drawio
+  #   hostname: drawio
+  #   restart: unless-stopped
+  #   environment:
+  #     PUBLIC_DNS: drawio
+  #     ORGANISATION_UNIT: zabbixlab
+  #     ORGANISATION: zabbixlab
+  #     CITY: zabbixlab
+  #     STATE: zabbixlab
+  #     COUNTRY_CODE: BR
+
+  # gitlab:
+  #   image: gitlab/gitlab-ce:latest
+  #   restart: unless-stopped
+  #   hostname: gitlab
+  #   environment:
+  #     GITLAB_OMNIBUS_CONFIG: |
+  #       external_url 'http://gitlab.example.com:8929'
+  #       gitlab_rails['gitlab_shell_ssh_port'] = 2224
+  #   ports:
+  #     - "8929:8929"
+  #     - "2224:22"
+  #   volumes:
+  #     - "$GITLAB_HOME/config:/etc/gitlab"
+  #     - "$GITLAB_HOME/logs:/var/log/gitlab"
+  #     - "$GITLAB_HOME/data:/var/opt/gitlab"
