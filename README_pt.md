@@ -43,16 +43,10 @@
   $ vim .env
   ```
 
-  | Environment      | Padrão |
-  | ---------------- | ------ |
-  | ZABBIX_VERSION   | 4.0    |
-  | POSTGRES_VERSION | 11     |
-
-- Quer tentar usar a versão em desenvolvimento?
-  | Environment | Default |
-  | ---------------- | ---------- |
-  | ZABBIX_VERSION | trunk |
-  | POSTGRES_VERSION | 11 |
+  | Ambiente         | Padrão     | Outras Opções |
+  | ---------------- | ---------- | ------------- |
+  | ZABBIX_VERSION   | 5.0-latest | 5.2-latest or 5.4-latest or trunk (o último é para versões de desenvolvimento)|
+  | POSTGRES_VERSION | 11         | 12 |
 
 - Iniciar o gestor do hosts para facilitar acesso:
   ```sh

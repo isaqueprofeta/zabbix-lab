@@ -46,16 +46,10 @@ Versão em pt_BR: Olhe o arquivo README_pt.md
   $ vim .env
   ```
 
-  | Environment      | Default    |
-  | ---------------- | ---------- |
-  | ZABBIX_VERSION   | 5.0-latest |
-  | POSTGRES_VERSION | 11         |
-
-- Want to try development versions?
-  | Environment | Default |
-  | ---------------- | ---------- |
-  | ZABBIX_VERSION | trunk |
-  | POSTGRES_VERSION | 11 |
+  | Environment      | Default    | Other Options |
+  | ---------------- | ---------- | ------------- |
+  | ZABBIX_VERSION   | 5.0-latest | 5.2-latest or 5.4-latest or trunk (this last one for development versions)|
+  | POSTGRES_VERSION | 11         | 12 |
 
 - Start the docker hoster for easy access using local DNS:
   ```sh
