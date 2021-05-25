@@ -108,3 +108,18 @@ action_update = zapi.action.update(
     status=0
 )
 logger.info(f'Updated action: {action_update}')
+
+# Update the Frontend URL setting
+logger.info('Searching Zabbix version to update URL Global setting')
+version = zapi.apiinfo.version()
+version_major = int(version.split('.')[0])
+version_minor = int(version.split('.')[1])
+if ((version_major == 5) and (version_minor >= 4)) or (version_major > 5):
+    logger.info(f'Version {version} detected, updating the Frontend URL setting')
+    setting_update = zapi.settings.update(
+        url='http://zabbix-frontend:8080/'
+    )
+    logger.info(f'Updated setting: {setting_update}')
+else:
+    logger.info(f'Version {version} detected, skipping update.')
+    
