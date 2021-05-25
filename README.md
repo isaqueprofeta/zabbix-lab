@@ -2,6 +2,10 @@
 
 Versão em pt_BR: Olhe o arquivo README_pt.md
 
+## Important Note:
+
+If you're using Zabbix 5.0 LTS or using Zabbix older than 5.4 please, remove or comment out the container zabbix-reports, or the docker-compose will not come up.
+
 ## Contents
 
 - Zabbix:
@@ -26,6 +30,9 @@ Versão em pt_BR: Olhe o arquivo README_pt.md
     - Updated EMail Media Type to use MailHog
     - Configured Media E-Mail for "Admin" user using MailHog
     - Enabled action "Report problems to Zabbix administrators"
+  - Zabbix 5.4 or later:
+    - Container for zabbix-web-server Scheduled Reports
+    - Configured URL frontend setting to match the lab: http://zabbix-frontend:8080
 
 ## How to use:
 
@@ -48,8 +55,8 @@ Versão em pt_BR: Olhe o arquivo README_pt.md
 
   | Environment      | Default    | Other Options |
   | ---------------- | ---------- | ------------- |
-  | ZABBIX_VERSION   | 5.0-latest | 5.2-latest or 5.4-latest or trunk (this last one for development versions)|
-  | POSTGRES_VERSION | 11         | 12 |
+  | ZABBIX_VERSION   | 5.4-latest | 5.0-latest or 5.2-latest or trunk (this last one for development versions)|
+  | POSTGRES_VERSION | 12         | 11 |
 
 - Start the docker hoster for easy access using local DNS:
   ```sh

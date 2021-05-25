@@ -1,5 +1,9 @@
 # Laboratório simples em docker para o Zabbix com PostgreSQL, Grafana e Zapix(Testes em API)
 
+## Important Note:
+
+Se você estiver usando o Zabbix 5.0 LTS ou usando uma versão anterior ao release do 5.4 por favor, remova ou comente as linhas do container zabbix-reports, ou o docker-compose não vai subir.
+
 ## Conteúdo
 
 - Zabbix:
@@ -24,6 +28,9 @@
     - Atualização do Tipo de Mídia EMail para usar o MailHog
     - Configurada a Mídia E-Mail para o usuário "Admin" usando MailHog
     - Habilitada a ação "Report problems to Zabbix administrators"
+  - Zabbix 5.4 or mais atual:
+    - Container para os Relatórios agendados do zabbix-web-server
+    - Configurada a URL do Frontend para o lab: http://zabbix-frontend:8080
 
 ## Como usar:
 
@@ -45,8 +52,8 @@
 
   | Ambiente         | Padrão     | Outras Opções |
   | ---------------- | ---------- | ------------- |
-  | ZABBIX_VERSION   | 5.0-latest | 5.2-latest or 5.4-latest or trunk (o último é para versões de desenvolvimento)|
-  | POSTGRES_VERSION | 11         | 12 |
+  | ZABBIX_VERSION   | 5.4-latest | 5.0-latest ou 5.2-latest ou trunk (o último é para versões de desenvolvimento)|
+  | POSTGRES_VERSION | 12         | 11 |
 
 - Iniciar o gestor do hosts para facilitar acesso:
   ```sh
