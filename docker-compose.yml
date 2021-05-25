@@ -19,6 +19,8 @@ services:
       - POSTGRES_DB=zabbix
       - POSTGRES_USER=zabbix
       - POSTGRES_PASSWORD=zabbix
+      - ZBX_STARTREPORTWRITERS=2
+      - ZBX_WEBSERVICEURL=http://zabbix-reports:10053/report
     volumes:
       - ./zabbix/usr/lib/zabbix/externalscripts:/usr/lib/zabbix/externalscripts:ro
     depends_on:
@@ -72,6 +74,19 @@ services:
       - ./zabbix/frontend_hacks:/usr/share/zabbix/local/
     depends_on:
       - zabbix-server
+
+  zabbix-reports:
+    hostname: zabbix-reports
+    restart: unless-stopped
+    image: zabbix/zabbix-web-service:alpine-${ZABBIX_VERSION}
+    environment:
+      - ZBX_ALLOWEDIP=zabbix-server,zabbix-frontend
+      - ZBX_DEBUGLEVEL=4
+    cap_add:
+      - SYS_ADMIN
+    depends_on:
+      - zabbix-server
+      - zabbix-frontend
 
   grafana:
     hostname: grafana
