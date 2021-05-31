@@ -19,6 +19,7 @@ services:
       - POSTGRES_DB=zabbix
       - POSTGRES_USER=zabbix
       - POSTGRES_PASSWORD=zabbix
+      - ENABLE_TIMESCALEDB=true
       - ZBX_STARTREPORTWRITERS=2
       - ZBX_WEBSERVICEURL=http://zabbix-reports:10053/report
     volumes:
@@ -49,11 +50,13 @@ services:
   postgresql:
     hostname: postgresql
     restart: unless-stopped
-    image: postgres:${POSTGRES_VERSION}-alpine
+    image: timescale/timescaledb:latest-pg${POSTGRES_VERSION}
     environment:
       - POSTGRES_DB=zabbix
       - POSTGRES_USER=zabbix
       - POSTGRES_PASSWORD=zabbix
+      - TS_TUNE_MEMORY=4GB
+      - TS_TUNE_NUM_CPUS=4
     volumes:
       - db_data:/var/lib/postgresql/data
     command: ["postgres", "-c", "max_connections=1000"]
