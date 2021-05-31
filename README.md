@@ -15,6 +15,7 @@ If you're versions before 5.4 (Like 5.0 LTS), please, remove or comment out the 
 - Database:
   - Postgresql at: postgresql:5432
   - PGAdmin at: http://pgadmin:5050
+  - TimescaleDB extension installed
 - Support Tools:
   - Zapix at: http://zapix
   - Grafana at: http://grafana:3000
@@ -26,6 +27,7 @@ If you're versions before 5.4 (Like 5.0 LTS), please, remove or comment out the 
     - Configured PostgreSQL datasource for database of Zabbix
     - Notification Channel using e-mail and MailHog
   - Zabbix is already provisioned with:
+    - Zabbix already configured with TimescaleDB
     - Updated "Zabbix server" host to zabbix-agent using DNS
     - Updated EMail Media Type to use MailHog
     - Configured Media E-Mail for "Admin" user using MailHog

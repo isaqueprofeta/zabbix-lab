@@ -13,6 +13,7 @@ Se você estiver usando o Zabbix 5.0 LTS ou usando uma versão anterior ao relea
 - Banco de dados:
   - Postgresql em : postgresql:5432
   - PGAdmin em : http://pgadmin:5050
+  - Extensão TimescaleDB instalada
 - Ferramentas de apoio:
   - Zapix em: http://zapix
   - Grafana em: http://grafana:3000
@@ -24,6 +25,7 @@ Se você estiver usando o Zabbix 5.0 LTS ou usando uma versão anterior ao relea
     - Configurado o Datasource PostgreSQL para o banco de dados do Zabbix
     - Notification Channel usando e-mail e MailHog
   - Zabbix já está provisionado com :
+    - Zabbix já configurado com TimescaleDB
     - Atualização do host "Zabbix server" para usar o nome zabbix-agent com DNS
     - Atualização do Tipo de Mídia EMail para usar o MailHog
     - Configurada a Mídia E-Mail para o usuário "Admin" usando MailHog
