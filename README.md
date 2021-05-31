@@ -4,7 +4,7 @@ Versão em pt_BR: Olhe o arquivo README_pt.md
 
 ## Important Note:
 
-If you're using Zabbix 5.0 LTS or using Zabbix older than 5.4 please, remove or comment out the container zabbix-reports, or the docker-compose will not come up.
+If you're versions before 5.4 (Like 5.0 LTS), please, remove or comment out the container zabbix-reports, or the docker-compose will not come up.
 
 ## Contents
 
