@@ -1,3 +1,3 @@
 [submodule "zapix"]
 	path = zapix
-	url = https://github.com/monitoringartist/zapix.git
+	url = git@github.com:isaqueprofeta/zapix.git
