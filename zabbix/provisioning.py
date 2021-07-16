@@ -19,9 +19,6 @@ finally:
 # Zabbix default credentials
 user = "Admin"
 password = "zabbix"
-server = "http://zabbix-frontend:8080/"
-zapi = pyzabbix.ZabbixAPI(server)
-zapi.session.verify = False
 
 # Wait for zabbix-frontend container to be available
 frontend_available = False
@@ -29,6 +26,9 @@ while frontend_available is False:
     try:
         logger.info('Trying to connect to zabbix-frontend')
 
+        server = "http://zabbix-frontend:8080/"
+        zapi = pyzabbix.ZabbixAPI(server)
+        zapi.session.verify = False
         zapi.login(user, password)
         frontend_available = True
 
