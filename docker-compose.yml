@@ -45,6 +45,7 @@ services:
       - POSTGRES_PASSWORD=zabbix
       - PHP_TZ=America/Sao_Paulo
       - ZBX_SERVER_NAME=zabbix-server
+      - ZBX_SERVER_HOST=zabbix-server
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
