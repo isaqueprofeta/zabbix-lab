@@ -58,10 +58,10 @@ Se você estiver usando o Zabbix 5.0 LTS ou usando uma versão anterior ao relea
 
   | Ambiente         | Padrão     | Outras Opções |
   | ---------------- | ---------- | ------------- |
-  | ZABBIX_VERSION   | 5.0-latest | 5.2-latest ou 5.4-latest ou trunk (o último é para versões de desenvolvimento)||
-  | POSTGRES_VERSION | 12         | 11 |
-  | GRAFANA_VERSION   | 7.5.10 | 8.0 ou 8.1
-  | GFN_ZBX_PLUGIN_VERSION | 4.1.5         | 4.2.2 (Para Grafana 8 e Zabbix 5.4) |
+  | ZABBIX_VERSION   | 6.0-latest | 5.0-latest, 5.2-latest, 5.4-latest ou trunk (o último é para versões de desenvolvimento)||
+  | POSTGRES_VERSION | 13         | 12 ou 11 |
+  | GRAFANA_VERSION   | 8.3.5 | 7.5.10, 8.1, 8.2
+  | GFN_ZBX_PLUGIN_VERSION | 4.2.4         | 4.1.5 (Para Grafana 8 e Zabbix 5.4) |
 
 - Iniciar o gestor do hosts para facilitar acesso:
 
