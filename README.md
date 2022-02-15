@@ -4,7 +4,7 @@ Versão em pt_BR: Olhe o arquivo README_pt.md
 
 ## Important Note
 
-If you're versions before 5.4 (Like 5.0 LTS), please, remove or comment out the container zabbix-reports, or the docker-compose will not come up.
+If you're using versions before 5.4 (Like 5.0 LTS), please, remove or comment out the container zabbix-reports, or the docker-compose will not come up.
 
 ## Contents
 
@@ -61,10 +61,10 @@ If you're versions before 5.4 (Like 5.0 LTS), please, remove or comment out the 
 
   | Environment      | Default    | Other Options |
   | ---------------- | ---------- | ------------- |
-  | ZABBIX_VERSION   | 5.0-latest | 5.2-latest or 5.4-latest or trunk (this last one for development versions)|
-  | POSTGRES_VERSION | 12         | 11 |
-  | GRAFANA_VERSION   | 7.5.10 | 8.0 or 8.1
-  | GFN_ZBX_PLUGIN_VERSION | 4.1.5         | 4.2.2 (For Grafana 8 and Zabbix 5.4) |
+  | ZABBIX_VERSION   | 6.0-latest | 5.0-latest, 5.2-latest, 5.4-latest or trunk (this last one for development versions)|
+  | POSTGRES_VERSION | 13         | 12 or 11 |
+  | GRAFANA_VERSION   | 8.3.5 | 7.5.10, 8.1, 8.2
+  | GFN_ZBX_PLUGIN_VERSION | 4.2.4         | 4.1.5 (For Grafana 7 and Zabbix 5.0) |
 
 - Start the docker hoster for easy access using local DNS:
 
