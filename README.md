@@ -61,10 +61,10 @@ If you're using versions before 5.4 (Like 5.0 LTS), please, remove or comment ou
 
   | Environment      | Default    | Other Options |
   | ---------------- | ---------- | ------------- |
-  | ZABBIX_VERSION   | 6.0-latest | 5.0-latest, 5.2-latest, 5.4-latest or trunk (this last one for development versions)|
+  | ZABBIX_VERSION   | 6.4-latest | 6.0-latest, 5.0-latest or trunk (this last one for development versions)|
   | POSTGRES_VERSION | 13         | 12 or 11 |
-  | GRAFANA_VERSION   | 8.3.5 | 7.5.10, 8.1, 8.2
-  | GFN_ZBX_PLUGIN_VERSION | 4.2.4         | 4.1.5 (For Grafana 7 and Zabbix 5.0) |
+  | GRAFANA_VERSION   | 11.0.0 | 7.5.10, 8.1, 8.2, 9.4, 10.3
+  | GFN_ZBX_PLUGIN_VERSION | 4.4.9         | 4.1.5 (For Grafana 7 and Zabbix 5.0) |
 
 - Start the docker hoster for easy access using local DNS:
 
