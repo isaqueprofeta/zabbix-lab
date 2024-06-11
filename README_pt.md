@@ -58,18 +58,19 @@ Se você estiver usando o Zabbix 5.0 LTS ou usando uma versão anterior ao relea
 
   | Ambiente         | Padrão     | Outras Opções |
   | ---------------- | ---------- | ------------- |
-  | ZABBIX_VERSION   | 6.0-latest | 5.0-latest, 5.2-latest, 5.4-latest ou trunk (o último é para versões de desenvolvimento)||
-  | POSTGRES_VERSION | 13         | 12 ou 11 |
-  | GRAFANA_VERSION   | 8.3.5 | 7.5.10, 8.1, 8.2
-  | GFN_ZBX_PLUGIN_VERSION | 4.2.4         | 4.1.5 (Para Grafana 8 e Zabbix 5.4) |
+  | ZABBIX_VERSION   | 7.0-latest | 6.0-latest, 5.0-latest, 5.2-latest, 5.4-latest ou trunk (o último é para versões de desenvolvimento)||
+  | POSTGRES_VERSION | 15         | 11, 12 ou 13 |
+  | GRAFANA_VERSION  | 8.3.5      | 7.5.10, 8.1, 8.2
+  | GFN_ZBX_PLUGIN_VERSION | 4.4.5| 4.1.5 (Para Grafana 8 e Zabbix 5.4) |
 
 - Iniciar o gestor do hosts para facilitar acesso:
 
   ```sh
   docker run -d \
-    -v /var/run/docker.sock:/tmp/docker.sock \
-    -v /etc/hosts:/tmp/hosts \
-    dvdarias/docker-hoster
+      --restart=always \
+      -v /var/run/docker.sock:/tmp/docker.sock \
+      -v /etc/hosts:/tmp/hosts \
+      dvdarias/docker-hoster
   ```
 
 - Iniciar o projeto com o docker-compose

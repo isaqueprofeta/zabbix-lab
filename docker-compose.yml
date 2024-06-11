@@ -1,17 +1,9 @@
-version: "3"
-
 volumes:
-  db_data:
+  zabbixdb_data:
     driver: local
-  grafana_data:
+  grafanadb_data:
     driver: local
   pgadmin_data:
-    driver: local
-  gitlab_config:
-    driver: local
-  gitlab_logs:
-    driver: local
-  gitlab_data:
     driver: local
 
 services:
@@ -21,7 +13,7 @@ services:
     image: zabbix/zabbix-server-pgsql:alpine-${ZABBIX_VERSION}
     environment:
       - DB_SERVER_PORT=5432
-      - DB_SERVER_HOST=postgresql
+      - DB_SERVER_HOST=timescaledb
       - POSTGRES_DB=zabbix
       - POSTGRES_USER=zabbix
       - POSTGRES_PASSWORD=zabbix
@@ -31,7 +23,7 @@ services:
     volumes:
       - ./zabbix/usr/lib/zabbix/externalscripts:/usr/lib/zabbix/externalscripts:ro
     depends_on:
-      - postgresql
+      - timescaledb
 
   zabbix-frontend:
     hostname: zabbix-frontend
@@ -39,7 +31,7 @@ services:
     image: zabbix/zabbix-web-apache-pgsql:alpine-${ZABBIX_VERSION}
     environment:
       - DB_SERVER_PORT=5432
-      - DB_SERVER_HOST=postgresql
+      - DB_SERVER_HOST=timescaledb
       - POSTGRES_DB=zabbix
       - POSTGRES_USER=zabbix
       - POSTGRES_PASSWORD=zabbix
@@ -51,22 +43,22 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./zabbix/etc/ssl/apache2:/etc/ssl/apache2:ro
     depends_on:
-      - postgresql
+      - timescaledb
       - zabbix-server
 
-  postgresql:
-    hostname: postgresql
+  timescaledb:
+    hostname: timescaledb
     restart: unless-stopped
-    image: timescale/timescaledb:2.8.1-pg14-oss
+    image: timescale/timescaledb:2.14.2-pg15-oss
     environment:
       - POSTGRES_DB=zabbix
       - POSTGRES_USER=zabbix
       - POSTGRES_PASSWORD=zabbix
-      - TS_TUNE_MEMORY=4GB
-      - TS_TUNE_NUM_CPUS=4
+      - TS_TUNE_MEMORY=2GB
+      - TS_TUNE_NUM_CPUS=2
     volumes:
-      - db_data:/var/lib/postgresql/data
-    command: ["postgres", "-c", "max_connections=1000"]
+      - zabbixdb_data:/var/lib/postgresql/data
+    command: ["postgres", "-c", "max_connections=100"]
 
   zabbix-agent:
     hostname: zabbix-agent
@@ -74,8 +66,6 @@ services:
     image: zabbix/zabbix-agent:alpine-${ZABBIX_VERSION}
     environment:
       - ZBX_HOSTNAME=zabbix-agent
-      - ZBX_DEBUGLEVEL=4
-      - ZBX_ENABLEREMOTECOMMANDS=1
       - ZBX_SERVER_HOST=zabbix-server
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -91,7 +81,6 @@ services:
     image: zabbix/zabbix-web-service:alpine-${ZABBIX_VERSION}
     environment:
       - ZBX_ALLOWEDIP=zabbix-server,zabbix-frontend
-      - ZBX_DEBUGLEVEL=4
     cap_add:
       - SYS_ADMIN
     depends_on:
@@ -117,7 +106,7 @@ services:
       - GF_SMTP_FROM_ADDRESS=grafana@zabbixlab.local
       - GF_SMTP_NAME=Grafana-ZabbixLab
     volumes:
-      - grafana_data:/var/lib/grafana
+      - grafanadb_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       - zabbix-frontend
@@ -137,7 +126,7 @@ services:
     volumes:
       - pgadmin_data:/pgadmin
     depends_on:
-      - postgresql
+      - timescaledb
 
   mailhog:
     hostname: mailhog
@@ -154,36 +143,3 @@ services:
       - ./zabbix/provisioning.py:/tmp/provisioning.py:ro
     depends_on:
       - zabbix-frontend
-
-  # gitlab:
-  #   image: gitlab/gitlab-ce:latest
-  #   restart: unless-stopped
-  #   hostname: gitlab
-  #   environment:
-  #     GITLAB_OMNIBUS_CONFIG: |
-  #       external_url 'http://gitlab:8929'
-  #       gitlab_rails['gitlab_shell_ssh_port'] = 2224
-  #       gitlab_rails['initial_root_password'] = 'rootpassword'
-  #   volumes:
-  #     - gitlab_config:/etc/gitlab
-  #     - gitlab_logs:/var/log/gitlab
-  #     - gitlab_data:/var/opt/gitlab
-
-  # drawio:
-  #   image: jgraph/drawio
-  #   hostname: drawio
-  #   restart: unless-stopped
-  #   environment:
-  #     PUBLIC_DNS: drawio
-  #     ORGANISATION_UNIT: zabbixlab
-  #     ORGANISATION: zabbixlab
-  #     CITY: zabbixlab
-  #     STATE: zabbixlab
-  #     COUNTRY_CODE: BR
-  #   environment:
-  #     - DRAWIO_BASE_URL=http://drawio
-  #     - DRAWIO_GITLAB_URL=http://gitlab:8929
-  #     - DRAWIO_GITLAB_ID=e8ee248fa759f0f68b8595317e9bedb585f282491464f71d9b2ebda89dd49218
-  #     - DRAWIO_CSP_HEADER=default-src \'self\'; script-src \'self\' \'unsafe-inline\'; connect-src \'self\' http://gitlab; img-src * data:; media-src * data:; font-src * about:; style-src \'self\' \'unsafe-inline\';
-  #   depends_on:
-  #     - gitlab

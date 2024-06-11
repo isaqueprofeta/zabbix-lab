@@ -1,6 +1,6 @@
 # Simple docker lab for Zabbix with PostgreSQL, Grafana and Zapix (API Testing)
 
-Versão em pt_BR: Olhe o arquivo README_pt.md
+Versão em pt_BR: Olhe o arquivo [README_pt.md](./README_pt.md)
 
 ## Important Note
 
@@ -61,10 +61,10 @@ If you're using versions before 5.4 (Like 5.0 LTS), please, remove or comment ou
 
   | Environment      | Default    | Other Options |
   | ---------------- | ---------- | ------------- |
-  | ZABBIX_VERSION   | 6.4-latest | 6.0-latest, 5.0-latest or trunk (this last one for development versions)|
-  | POSTGRES_VERSION | 13         | 12 or 11 |
-  | GRAFANA_VERSION   | 11.0.0 | 7.5.10, 8.1, 8.2, 9.4, 10.3
-  | GFN_ZBX_PLUGIN_VERSION | 4.4.9         | 4.1.5 (For Grafana 7 and Zabbix 5.0) |
+  | ZABBIX_VERSION   | 7.0-latest | 6.0-latest, 6.0-latest, 5.0-latest or trunk (this last one for development versions)|
+  | POSTGRES_VERSION | 15         | 11, 12 ou 13 |
+  | GRAFANA_VERSION  | 11.0.0     | 7.5.10, 8.1, 8.2, 9.4, 10.3
+  | GFN_ZBX_PLUGIN_VERSION | 4.4.5| 4.1.5 (For Grafana 7 and Zabbix 5.0) |
 
 - Start the docker hoster for easy access using local DNS:
 
