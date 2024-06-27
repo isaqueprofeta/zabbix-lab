@@ -26,7 +26,7 @@ datasources:
 
   - name: Zabbix-DB
     type: postgres
-    url: postgresql:5432
+    url: timescaledb:5432
     database: zabbix
     user: zabbix
     secureJsonData:
